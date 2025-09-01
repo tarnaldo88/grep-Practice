@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
-#include <regex>
+#include <regex.h>
 
 void search_pattern(FILE *file, const char* pattern)
 {
@@ -17,6 +17,28 @@ void search_pattern(FILE *file, const char* pattern)
         }
         line_number++;
     }
+}
+
+void search_pattern_regex(FILE *file, const char* pattern)
+{
+    char line[1024];
+    int line_n = 1;
+    regex_t regex;
+
+    if(regcomp(&regex, pattern, REG_EXTENDED)){
+        printf("Error compiling the regex: %s\n", pattern);
+        return;
+    }
+
+    while(fgets(line, sizeof(line), file))
+    {
+        if(!regexec(&regex, line, 0, NULL, 0))
+        {
+            printf("%d: %s", line_n, line);
+        }
+        line_n++;
+    }
+    regfree(&regex);
 }
 
 int main(int argc, char* argv[])
@@ -38,4 +60,12 @@ int main(int argc, char* argv[])
     printf("Simple grep (non-regex):\n");
 
     search_pattern(file, argv[1]);
+
+    rewind(file);
+    printf("\nGrep with regex: \n");
+    search_pattern_regex(file,argv[1]);
+
+    fclose(file);
+
+    return 0;
 }
