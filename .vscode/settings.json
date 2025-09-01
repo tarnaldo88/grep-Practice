@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "xlocmon": "c"
+        "xlocmon": "c",
+        "string.h": "c"
     }
 }

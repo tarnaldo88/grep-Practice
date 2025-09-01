@@ -1,7 +1,7 @@
 //Global Regular Expression Print
 #include <stdio.h>
 #include <stdlib.h>
-#include <string>
+#include <string.h>
 #include <regex.h>
 
 void search_pattern(FILE *file, const char* pattern)
